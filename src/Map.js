@@ -16,7 +16,8 @@ export default class Map extends React.Component {
       icon: '',
       lon: 0,
       lat: 0,
-      name: ''
+      name: '',
+      desc: ''
     };
     this.getWeather = this.getWeather.bind( this );
   }
@@ -32,7 +33,8 @@ export default class Map extends React.Component {
           icon: json.weather[0].icon,
           lon: json.coord.lon,
           lat: json.coord.lat,
-          name: json.name
+          name: json.name,
+          desc: json.weather[0].main
         } )
       } ).catch( ( ex ) => {
         console.log( 'parsing failed', ex )
@@ -56,7 +58,7 @@ export default class Map extends React.Component {
 
   render() {
     const mapStyle = {
-      height: 400,
+      height: 300,
       border: '1px solid black'
     };
 
@@ -65,19 +67,11 @@ export default class Map extends React.Component {
         <h2>Click somewhere...</h2>
         <div ref="map" style={mapStyle}>I should be a map!</div>
         {this.state.name &&
-          <div>
-            <p className="App-intro">
-              The current weather in <strong>{this.state.name}</strong>:
-            </p>
-            <p className="App-intro">
-              Temperature: {this.state.temperature}&#8451;
-            </p>
-            <p className="App-intro">
-              Humidity: {this.state.humidity}%
-            </p>
-            <p className="App-intro">
-              <img src={this.state.icon && `http://openweathermap.org/img/w/${this.state.icon}.png`} alt="weather" />
-            </p>
+          <div className="App-info">
+            <h2>The weather in {this.state.name} (lon: {this.state.lon} lat: {this.state.lat}):</h2>
+            <img src={this.state.icon && `http://openweathermap.org/img/w/${this.state.icon}.png`} alt="weather" />
+            <p>{this.state.temperature}&#8451;</p>
+            <p>Humidity: {this.state.humidity}%</p>
           </div>
         }
       </div>

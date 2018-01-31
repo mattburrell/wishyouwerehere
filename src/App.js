@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import Map from './Map';
+import Footer from './Footer';
 
 class App extends Component {
   render() {
@@ -10,6 +11,7 @@ class App extends Component {
           <h1 className="App-title">Wish you were here?</h1>
         </header>
         <Map />
+        <Footer />
       </div>
     );
   }

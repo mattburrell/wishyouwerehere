@@ -1,0 +1,22 @@
+.App-header {
+  background-color: #222;
+  font-family: 'Gloria Hallelujah', cursive;
+  font-size: 1.5em;
+  padding: 20px;
+  color: white;
+}
+
+.App-title {
+  font-size: 1.5em;
+  text-align: center;
+}
+
+.App-intro {
+  text-align: left;
+}
+
+.main {
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}

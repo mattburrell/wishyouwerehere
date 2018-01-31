@@ -56,7 +56,6 @@ export default class Map extends React.Component {
 
   render() {
     const mapStyle = {
-      width: 600,
       height: 400,
       border: '1px solid black'
     };

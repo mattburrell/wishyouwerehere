@@ -2,7 +2,7 @@
   background-color: #222;
   font-family: 'Gloria Hallelujah', cursive;
   font-size: 1.5em;
-  padding: 20px;
+  padding: 10px;
   color: white;
 }
 
@@ -28,4 +28,5 @@
   margin-left: auto;
   margin-right: auto;
   width: 75%;
+  overflow: auto;
 }

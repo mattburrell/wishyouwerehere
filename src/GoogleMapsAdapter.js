@@ -1,11 +1,6 @@
-const LONDON_POSITION = {
-  lat: 51.5074,
-  lng: 0.1278
-};
-
-export const getMap = (refs) => {
+export const getMap = (refs, location) => {
   return new window.google.maps.Map(refs.map, {
-    center: LONDON_POSITION,
+    center: location,
     zoom: 10
   });
 }

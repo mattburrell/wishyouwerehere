@@ -1,10 +1,10 @@
-export const getMap = (refs, location) => {
+export const getMap = (refs, loc) => {
   return new window.google.maps.Map(refs.map, {
-    center: location,
+    center: loc,
     zoom: 10
   });
 }
 
-export const removeEventListeners = () => {
-  window.google.maps.event.removeListener(this.MapListener);
+export const removeEventListeners = (listener) => {
+  window.google.maps.event.removeListener(listener);
 }

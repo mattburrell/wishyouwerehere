@@ -1,11 +1,7 @@
 import React from 'react';
-
-const google = window.google;
-
-const LONDON_POSITION = {
-  lat: 51.5074,
-  lng: 0.1278
-};
+import { Grid, Row, Col } from 'react-bootstrap';
+import { getMap, removeEventListeners } from './GoogleMapsAdapter';
+import getWeather from './WeatherService';
 
 export default class Map extends React.Component {
   constructor( props ) {
@@ -19,41 +15,30 @@ export default class Map extends React.Component {
       name: '',
       desc: ''
     };
-    this.getWeather = this.getWeather.bind( this );
-  }
-
-  getWeather( lat, lon ) {
-    fetch( `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=e1189fa38433116a66ad24e38b8cdc68` )
-      .then( ( response ) => {
-        return response.json()
-      } ).then( ( json ) => {
-        this.setState( {
-          temperature: Math.round( json.main.temp ),
-          humidity: Math.round( json.main.humidity ),
-          icon: json.weather[0].icon,
-          lon: json.coord.lon,
-          lat: json.coord.lat,
-          name: json.name,
-          desc: json.weather[0].main
-        } )
-      } ).catch( ( ex ) => {
-        console.log( 'parsing failed', ex )
-      } )
+    this.updateMap = this.updateMap.bind(this);
   }
 
   componentDidMount() {
-    this.map = new google.maps.Map( this.refs.map, {
-      center: LONDON_POSITION,
-      zoom: 10
-    } );
-
-    this.MapListener = this.map.addListener( 'click', e => {
-      this.getWeather( e.latLng.lat(), e.latLng.lng() );
-    } );
+    const map = getMap(this.refs);
+    map.addListener('click', e => {
+      getWeather(e.latLng.lat(), e.latLng.lng(), this.updateMap);
+    });
   }
 
   componentWillUnmount() {
-    google.maps.event.removeListener( this.MapListener );
+    removeEventListeners();
+  }
+
+  updateMap(json) {
+    this.setState({
+      temperature: Math.round(json.main.temp),
+      humidity: Math.round(json.main.humidity),
+      icon: json.weather[0].icon,
+      lon: json.coord.lon,
+      lat: json.coord.lat,
+      name: json.name,
+      desc: json.weather[0].main
+    })
   }
 
   render() {
@@ -63,18 +48,24 @@ export default class Map extends React.Component {
     };
 
     return (
-      <div className="main">
-        <h2>Click somewhere...</h2>
-        <div ref="map" style={mapStyle}>I should be a map!</div>
-        {this.state.name &&
-          <div className="App-info">
-            <h2>The weather in {this.state.name} (lon: {this.state.lon} lat: {this.state.lat}):</h2>
-            <img src={this.state.icon && `http://openweathermap.org/img/w/${this.state.icon}.png`} alt="weather" />
-            <p>{this.state.temperature}&#8451;</p>
-            <p>Humidity: {this.state.humidity}%</p>
-          </div>
-        }
-      </div>
+      <Grid>
+        <h3>Find your location</h3>
+        <Row>
+          <Col xs={12} md={4}>
+            <div ref="map" style={mapStyle}>I should be a map!</div>
+          </Col>
+          <Col xs={12} md={8}>
+              {this.state.name &&
+                <div>
+                  <p>The weather in {this.state.name} (lon: {this.state.lon} lat: {this.state.lat}):</p>
+                  <img src={this.state.icon && `http://openweathermap.org/img/w/${this.state.icon}.png`} alt="weather" />
+                  <p>{this.state.temperature}&#8451;</p>
+                  <p>Humidity: {this.state.humidity}%</p>
+                </div>
+              }
+          </Col>
+        </Row>
+      </Grid>
     );
   }
 }

@@ -2,6 +2,3 @@
   Command = "yarn build && yarn build:lambda"
   Functions = "lambda"
   Publish = "build"
-  
-[context.base.environment]
-  WEATHERAPI=123

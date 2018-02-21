@@ -1,6 +1,4 @@
-const fs = require("fs");
-const toml = require('toml');
-const config = toml.parse(fs.readFileSync('netlify.toml'));
+require('dotenv').config();
 
 const WEATHERAPI = process.env.WEATHERAPI !== undefined
   ? process.env.WEATHERAPI

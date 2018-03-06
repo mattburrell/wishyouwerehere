@@ -1,0 +1,30 @@
+{
+  "name": "wishyouwerehere",
+  "version": "0.1.0",
+  "private": true,
+  "proxy": "http://localhost:9000",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "bootstrap": "^3.3.7",
+    "dotenv": "^5.0.0",
+    "react": "^16.1.1",
+    "react-bootstrap": "^0.32.1",
+    "react-dom": "^16.1.1",
+    "react-google-maps": "^9.4.5",
+    "react-scripts": "1.0.17",
+    "react-twitter-widgets": "^1.7.1"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "start:lambda": "netlify-lambda serve src/lambda",
+    "build": "react-scripts build",
+    "build:lambda": "netlify-lambda build src/lambda",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  },
+  "devDependencies": {
+    "enzyme": "^3.3.0",
+    "enzyme-adapter-react-16": "^1.1.1",
+    "netlify-lambda": "^0.2.0"
+  }
+}

@@ -19,10 +19,6 @@ export default function withLocator(WrappedComponent) {
       };
     }
 
-    componentDidCatch() {
-      this.setState({ isLocating: false })
-    }
-
     componentDidMount() {
       if (canGetUserLocation()) {
         this.setState({ isLocating: true })
@@ -32,6 +28,9 @@ export default function withLocator(WrappedComponent) {
             latitude: position.coords.latitude,
             isLocating: false
           }));
+        }, err => {
+          console.log(err.code);
+          this.setState({ isLocating: false })
         });
       }
     }

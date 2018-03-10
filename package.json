@@ -11,8 +11,7 @@
     "react-bootstrap": "^0.32.1",
     "react-dom": "^16.1.1",
     "react-google-maps": "^9.4.5",
-    "react-scripts": "1.0.17",
-    "react-twitter-widgets": "^1.7.1"
+    "react-scripts": "1.0.17"
   },
   "scripts": {
     "start": "react-scripts start",

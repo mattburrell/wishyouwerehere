@@ -31,7 +31,7 @@ const App = (props) => {
             zoom={2}
             position={{ lat: props.lat, lng: props.lng }}
             onMapClick={props.updateWeather}
-            googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyDlwmWAojJSRz9O-Kpcf4IJRXBs2XqMMGo"
+            googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_MAPS_API}`}
             loadingElement={<div style={{ height: '100%' }} />}
             containerElement={<div style={{ border: '1px solid black', height: '300px', marginBottom: '20px', id: 'sdgsdg' }} />}
             mapElement={<div style={{ height: '100%' }} />}

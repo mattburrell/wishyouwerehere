@@ -2,6 +2,8 @@
 
 A simple app for finding out the weather by clicking on a map!
 
+The purpose of this example is to show how to keep api keys secret. (Hint: use a lambda!)
+
 If your browser allows it, the app will find your location when you load the page.
 
 Demo: [www.wishyouwerehere.online](https://www.wishyouwerehere.online).

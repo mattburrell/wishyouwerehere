@@ -2,3 +2,8 @@
   Command = "npm run build && npm run build:lambda"
   Functions = "lambda"
   Publish = "build"
+
+[template.environment]
+  REACT_APP_WEATHER_ENDPOINT = "<your-domain>/.netlify/functions/weatherHandler"
+  REACT_APP_GOOGLE_MAPS_API = "Your Google Maps API key"
+  WEATHER_API = "Your OpenWeatherMap API key"

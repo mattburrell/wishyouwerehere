@@ -8,8 +8,6 @@ Styling uses [Tailwind](https://tailwindcss.com/).
 
 If your browser allows it, the app will find your location when you load the page.
 
-Demo: [www.wishyouwerehere.online](https://www.wishyouwerehere.online).
-
 ## Dependencies
 
 This project was bootstrapped with [Create React App](https://create-react-app.dev/).

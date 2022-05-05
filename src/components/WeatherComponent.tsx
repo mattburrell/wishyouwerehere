@@ -7,10 +7,12 @@ function WeatherComponent({
   humidity,
   desc,
   country,
+  lat,
+  lng
 }: Weather) {
   return (
     <div>
-      <h3 className="text-lg mb-3 uppercase">Weather in {name}</h3>
+      <h3 className="text-lg mb-3 uppercase">Weather in {name} ({lat}&deg;N, {lng}&deg;W)</h3>
       <p className="leading-relaxed">
         <span className="font-bold">Description:</span> {desc}{' '}
         <img

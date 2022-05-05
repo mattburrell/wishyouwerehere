@@ -1,5 +1,5 @@
-require("dotenv").config();
-const axios = require("axios");
+require('dotenv').config();
+const axios = require('axios');
 
 exports.handler = async function (event, context) {
   const lat = event.queryStringParameters.lat;
@@ -7,7 +7,7 @@ exports.handler = async function (event, context) {
 
   try {
     const response = await axios.get(
-      `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lng}&units=metric&appid=${process.env.WEATHERAPI}`
+      `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lng}&units=metric&appid=${process.env.WEATHERAPI}`,
     );
 
     return {
@@ -17,7 +17,7 @@ exports.handler = async function (event, context) {
   } catch {
     return {
       statusCode: 500,
-      body: JSON.stringify({ "message": "An error occurred."}),
+      body: JSON.stringify({ message: 'An error occurred.' }),
     };
   }
 };

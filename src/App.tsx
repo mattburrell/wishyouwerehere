@@ -72,7 +72,7 @@ function App({ defaultPosition }: AppProps) {
         lat: weather.coord.lat,
         name: weather.name?.length
           ? weather.name
-          : `Lat: ${weather.coord.lat}, Lng: ${weather.coord.lon}`,
+          : unknownCountry,
         desc: weather.weather[0].main,
         country: lookupCountry(weather.sys.country),
       });
@@ -107,7 +107,7 @@ function App({ defaultPosition }: AppProps) {
           {isFetchingWeather && (
             <div className="text-lg">Fetching weather...</div>
           )}
-          {weather && !isFetchingWeather && <WeatherComponent {...weather} />}
+          {!isFetchingWeather && weather && <WeatherComponent {...weather} />}
         </div>
       </div>
     </div>

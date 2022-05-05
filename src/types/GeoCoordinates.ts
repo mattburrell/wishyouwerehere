@@ -1,4 +1,4 @@
 export interface GeoCoordinates {
-    lat: number;
-    lng: number;
-  }
+  lat: number;
+  lng: number;
+}

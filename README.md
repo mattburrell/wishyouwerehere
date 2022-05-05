@@ -1,8 +1,8 @@
 # Wish You Were Here
 
-A simple app for finding out the weather by clicking on a map! Demonstrates how to hide a secret from the client by using a serverless function hosted by Netlify.
+A simple app for finding out the weather by clicking on a map!
 
-The purpose of this example is to show how to use a React app with a Netlify backend Function.
+The purpose of this example is to show how to hide an api key from the frontend JavaScript (hint: use a Netlify backend Function!)
 
 Styling uses [Tailwind](https://tailwindcss.com/).
 

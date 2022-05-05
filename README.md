@@ -2,7 +2,7 @@
 
 A React app for finding out the weather by clicking on a map!
 
-The purpose of this example is to show how to hide an api key from the frontend JavaScript (hint: use a Netlify backend Function!)
+The purpose of this example is to show how to hide an api key from the frontend JavaScript (hint: use a backend Function!)
 
 Styling uses [Tailwind](https://tailwindcss.com/).
 

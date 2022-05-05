@@ -6,7 +6,7 @@
     "@netlify/functions": "^1.0.0",
     "@react-google-maps/api": "^2.10.1",
     "@testing-library/jest-dom": "^5.16.4",
-    "@testing-library/react": "^13.1.1",
+    "@testing-library/react": "^13.2.0",
     "@testing-library/user-event": "^13.5.0",
     "@types/google-map-react": "^2.1.5",
     "@types/jest": "^27.4.1",
@@ -25,7 +25,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "dev": "netlify dev"
+    "dev": "netlify dev",
+    "cypress:open": "cypress open"
   },
   "eslintConfig": {
     "extends": [
@@ -47,6 +48,7 @@
   },
   "devDependencies": {
     "autoprefixer": "^10.4.5",
+    "cypress": "^9.6.0",
     "postcss": "^8.4.12",
     "tailwindcss": "^3.0.24"
   }

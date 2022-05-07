@@ -12,7 +12,7 @@ interface AppProps {
 }
 
 function App({ defaultPosition }: AppProps) {
-  const { isComplete, latitude, longitude } = useGeoLocation();
+  const { isComplete, latitude, longitude, locatorError } = useGeoLocation();
   const [weather, setWeather] = useState<Weather>();
   const [isFetchingWeather, setIsFetchingWeather] = useState<boolean>(false);
 
@@ -74,6 +74,7 @@ function App({ defaultPosition }: AppProps) {
               onClick={memoizedGetWeather}
             />
           )}
+          {locatorError && <div className="text-lg">An error occurred whilst finding your location...</div>}
         </div>
         <div className="basis-1/2 border-solid border-2 border-black-500 p-8">
           {isFetchingWeather && (

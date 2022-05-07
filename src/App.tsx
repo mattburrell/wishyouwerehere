@@ -1,54 +1,22 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import MapComponent from './components/MapComponent';
 import WeatherComponent from './components/WeatherComponent';
 import { countries } from './data/countries';
 import { Weather } from './types/Weather';
-import { GeoCoordinates } from './types/GeoCoordinates';
-import { geoLocationEnabled, getUserLocation } from './utils/location';
 import axios from 'axios';
+import { useGeoLocation } from './hooks/useGeoLocation';
+import { GeoCoordinates } from './types/GeoCoordinates';
 
 interface AppProps {
   defaultPosition: GeoCoordinates;
 }
 
 function App({ defaultPosition }: AppProps) {
+  const { isComplete, latitude, longitude } = useGeoLocation();
   const [weather, setWeather] = useState<Weather>();
-  const [isLocating, setIsLocating] = useState<boolean>(true);
   const [isFetchingWeather, setIsFetchingWeather] = useState<boolean>(false);
-  const [location, setLocation] = useState<GeoCoordinates>(defaultPosition);
 
   const unknownCountry = 'Unknown';
-
-  function handleSuccessGetCurrentLocation(position: {
-    coords: { latitude: number; longitude: number };
-  }) {
-    setLocation({
-      lat: position.coords.latitude,
-      lng: position.coords.longitude,
-    });
-    setIsLocating(false);
-  }
-
-  function handleErrorOnGetCurrentPosition(err) {
-    setIsLocating(false);
-    console.dir(err);
-  }
-
-  useEffect(() => {
-    if (!geoLocationEnabled()) {
-      setIsLocating(false);
-    } else {
-      try {
-        getUserLocation(
-          handleSuccessGetCurrentLocation,
-          handleErrorOnGetCurrentPosition,
-        );
-      } catch (err) {
-        setIsLocating(false);
-        console.dir(err);
-      }
-    }
-  }, []);
 
   const lookupCountry = (code: string): string => {
     if (typeof code === 'undefined') return unknownCountry;
@@ -70,9 +38,7 @@ function App({ defaultPosition }: AppProps) {
         icon: weather.weather[0].icon,
         lng: weather.coord.lon,
         lat: weather.coord.lat,
-        name: weather.name?.length
-          ? weather.name
-          : unknownCountry,
+        name: weather.name?.length ? weather.name : unknownCountry,
         desc: weather.weather[0].main,
         country: lookupCountry(weather.sys.country),
       });
@@ -97,10 +63,16 @@ function App({ defaultPosition }: AppProps) {
       </div>
       <div className="flex flex-col md:flex-row mx-20 mt-8 mb-8 gap-2 h-96">
         <div className="basis-1/2 min-h-full">
-          {isLocating ? (
+          {!isComplete ? (
             <div className="text-lg">Finding your location...</div>
           ) : (
-            <MapComponent location={location} onClick={memoizedGetWeather} />
+            <MapComponent
+              location={{
+                lat: latitude || defaultPosition.lat,
+                lng: longitude || defaultPosition.lng,
+              }}
+              onClick={memoizedGetWeather}
+            />
           )}
         </div>
         <div className="basis-1/2 border-solid border-2 border-black-500 p-8">

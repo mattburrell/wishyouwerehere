@@ -100,9 +100,30 @@ describe('App', () => {
       .spyOn(hooks, 'useGeoLocation')
       .mockImplementation(() => mockGeoLocationResult);
 
-      render(<App defaultPosition={DEFAULT_POSITION} />);
+    render(<App defaultPosition={DEFAULT_POSITION} />);
 
     expect(screen.queryByText(/Finding your location/)).toBeInTheDocument();
+  });
+
+  test('renders message when error occurs on locating', async () => {
+    const mockGeoLocationResult: GeoLocationResult = {
+      isComplete: true,
+      locatorError: {
+        code: 1,
+        message: 'permission denied',
+        PERMISSION_DENIED: 1,
+        POSITION_UNAVAILABLE: 1,
+        TIMEOUT: 1,
+      },
+    };
+
+    jest
+      .spyOn(hooks, 'useGeoLocation')
+      .mockImplementation(() => mockGeoLocationResult);
+
+      await renderApp();
+
+    expect(screen.queryByText(/An error occurred whilst finding your location.../)).toBeInTheDocument();
   });
 });
 

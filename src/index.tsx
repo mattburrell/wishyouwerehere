@@ -12,7 +12,7 @@ root.render(
     <App
       defaultPosition={{
         lat: 51.5,
-        lng: -0.12,
+        lng: -0.12
       }}
     />
   </React.StrictMode>,

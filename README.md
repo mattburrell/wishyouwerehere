@@ -48,5 +48,5 @@ netlify deploy
 
 You will need to add these Build Environment Variables to Netlify:
 
-- REACT_APP_GOOGLE_MAPS_API=your-api-key
+- VITE_GOOGLE_MAPS_API=your-api-key
 - WEATHER_API=your-api-key

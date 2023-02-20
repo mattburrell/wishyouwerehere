@@ -1,6 +1,6 @@
-import { memo, useEffect, useState } from 'react';
-import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
-import { GeoCoordinates } from '../types/GeoCoordinates';
+import { memo, useEffect, useState } from "react";
+import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
+import { GeoCoordinates } from "../types/GeoCoordinates";
 
 interface MapComponentProps {
   location: GeoCoordinates;
@@ -9,8 +9,8 @@ interface MapComponentProps {
 
 function MapComponent({ location, onClick }: MapComponentProps) {
   const { isLoaded, loadError } = useJsApiLoader({
-    id: 'google-map-script',
-    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API || '',
+    id: "google-map-script",
+    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API || "",
   });
   const [center, setCenter] = useState<GeoCoordinates>();
 
@@ -18,7 +18,7 @@ function MapComponent({ location, onClick }: MapComponentProps) {
     onClick(location.lat, location.lng);
   }, [location.lat, location.lng, onClick]);
 
-  const handleClick = (e) => {
+  const handleClick = (e: any) => {
     const lat = e.latLng.lat();
     const lng = e.latLng.lng();
     setCenter({ lat, lng });
@@ -33,9 +33,10 @@ function MapComponent({ location, onClick }: MapComponentProps) {
 
   return isLoaded ? (
     <GoogleMap
-      mapContainerStyle={{ width: '100%', minHeight: '24rem' }}
+      mapContainerStyle={{ width: "100%", minHeight: "24rem" }}
       center={center || location}
       zoom={10}
+      options={{ disableDefaultUI: true, zoomControl: true }}
       onClick={handleClick}
     >
       <Marker position={center || location} />

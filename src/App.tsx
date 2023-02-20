@@ -1,11 +1,13 @@
-import { useCallback, useState } from 'react';
-import MapComponent from './components/MapComponent';
-import WeatherComponent from './components/WeatherComponent';
-import { countries } from './data/countries';
-import { Weather } from './types/Weather';
-import axios from 'axios';
-import { useGeoLocation } from './hooks/useGeoLocation';
-import { GeoCoordinates } from './types/GeoCoordinates';
+import { useCallback, useState } from "react";
+import MapComponent from "./components/MapComponent";
+import WeatherComponent from "./components/WeatherComponent";
+import { countries } from "./data/countries";
+import { Weather } from "./types/Weather";
+import axios from "axios";
+import { useGeoLocation } from "./hooks/useGeoLocation";
+import { GeoCoordinates } from "./types/GeoCoordinates";
+
+const unknownCountry = "Unknown";
 
 interface AppProps {
   defaultPosition: GeoCoordinates;
@@ -16,19 +18,18 @@ function App({ defaultPosition }: AppProps) {
   const [weather, setWeather] = useState<Weather>();
   const [isFetchingWeather, setIsFetchingWeather] = useState<boolean>(false);
 
-  const unknownCountry = 'Unknown';
-
   const lookupCountry = (code: string): string => {
-    if (typeof code === 'undefined') return unknownCountry;
+    if (typeof code === "undefined") {
+      return unknownCountry;
+    }
     return countries.find((c) => c.code === code)?.name ?? unknownCountry;
   };
 
   const memoizedGetWeather = useCallback(async (lat: number, lng: number) => {
     try {
       setIsFetchingWeather(true);
-
       const response = await axios.get(
-        `/.netlify/functions/weather-service?lat=${lat}&lng=${lng}`,
+        `/.netlify/functions/weather-service?lat=${lat}&lng=${lng}`
       );
       const weather = response.data;
 
@@ -50,39 +51,44 @@ function App({ defaultPosition }: AppProps) {
   }, []);
 
   return (
-    <div className="py-12 bg-white">
-      <div className="text-center">
-        <h1 className="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
-          Wish you were here
+    <div className="mt-12 m-8 md:max-w-[1000px] md:mx-auto grid grid-cols-1 grid-rows-[auto_auto_minmax(24rem,1fr)_minmax(24rem,1fr)_auto] md:grid-cols-2 md:grid-rows-[auto_auto_minmax(24rem,1fr)_auto] gap-x-4 gap-y-6">
+      <div className="col-span-1 md:col-span-2">
+        <h1 className="text-3xl font-extrabold tracking-tight sm:text-4xl text-blue-900 text-center">
+          Wish You Were Here?
         </h1>
       </div>
-      <div className="text-center">
-        <h3 className="mt-4 max-w-2xl text-xl text-gray-500 lg:mx-auto">
-          Where would you like to go?
+      <div className="col-span-1 md:col-span-2">
+        <h3 className="text-xl text-gray-500 text-center">
+          Click a location on the map
         </h3>
       </div>
-      <div className="flex flex-col md:flex-row mx-20 mt-8 mb-8 gap-2 h-96">
-        <div className="basis-1/2 min-h-full">
-          {!isComplete ? (
-            <div className="text-lg">Finding your location...</div>
-          ) : (
-            <MapComponent
-              location={{
-                lat: latitude || defaultPosition.lat,
-                lng: longitude || defaultPosition.lng,
-              }}
-              onClick={memoizedGetWeather}
-            />
-          )}
-          {locatorError && <div className="text-lg">An error occurred whilst finding your location...</div>}
-        </div>
-        <div className="basis-1/2 border-solid border-2 border-black-500 p-8">
-          {isFetchingWeather && (
-            <div className="text-lg">Fetching weather...</div>
-          )}
-          {!isFetchingWeather && weather && <WeatherComponent {...weather} />}
-        </div>
+      <div className="col-span-1 border-solid border-2 border-grey-500 flex justify-center align-middle flex-row">
+        {!isComplete ? (
+          <div className="text-lg p-8">Finding your location...</div>
+        ) : (
+          <MapComponent
+            location={{
+              lat: latitude || defaultPosition.lat,
+              lng: longitude || defaultPosition.lng,
+            }}
+            onClick={memoizedGetWeather}
+          />
+        )}
+        {locatorError && (
+          <div className="text-lg">
+            An error occurred whilst finding your location...
+          </div>
+        )}
       </div>
+      <div className="col-span-1 border-solid border-2 border-grey-500 p-4 flex justify-start">
+        {isFetchingWeather && (
+          <div className="text-lg">Fetching weather...</div>
+        )}
+        {!isFetchingWeather && weather && <WeatherComponent {...weather} />}
+      </div>
+      <footer className="col-span-1 md:col-span-2 text-xs text-center">
+        Built by Matt Burrell, Solid Code Solutions
+      </footer>
     </div>
   );
 }

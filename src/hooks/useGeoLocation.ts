@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
 export interface GeoLocationResult {
   latitude?: number;
@@ -34,7 +34,7 @@ export const useGeoLocation = (): GeoLocationResult => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         onLocationFound,
-        onLocationError,
+        onLocationError
       );
     } else {
       setIsComplete(true);

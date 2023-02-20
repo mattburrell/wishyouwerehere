@@ -1,15 +1,17 @@
+import { afterEach, describe, expect, test, vi, Mocked } from "vitest";
 import {
   render,
   screen,
   waitForElementToBeRemoved,
-} from '@testing-library/react';
-import App from './App';
-import axios, { AxiosResponse } from 'axios';
-import { GeoCoordinates } from './types/GeoCoordinates';
-import * as hooks from './hooks/useGeoLocation';
-import { GeoLocationResult } from './hooks/useGeoLocation';
+} from "@testing-library/react";
+import App from "./App";
+import axios, { AxiosResponse } from "axios";
+import { GeoCoordinates } from "./types/GeoCoordinates";
+import * as hooks from "./hooks/useGeoLocation";
+import { GeoLocationResult } from "./hooks/useGeoLocation";
 
-const mockedAxios = axios as jest.Mocked<typeof axios>;
+vi.mock("axios");
+const mockedAxios = axios as Mocked<typeof axios>;
 
 const DEFAULT_POSITION: GeoCoordinates = {
   lat: 51.5,
@@ -18,112 +20,105 @@ const DEFAULT_POSITION: GeoCoordinates = {
 
 async function renderApp() {
   render(<App defaultPosition={DEFAULT_POSITION} />);
-  // Wait for page to finish rendering
   await waitForElementToBeRemoved(() =>
-    screen.queryByText(/Fetching weather.../i),
+    screen.queryByText(/Fetching weather.../i)
   );
 }
 
-describe('App', () => {
-  beforeEach(() => {
+function mockGeoLocation(mockGeoLocationResult: GeoLocationResult) {
+  vi.spyOn(hooks, "useGeoLocation").mockImplementation(
+    () => mockGeoLocationResult
+  );
+}
+
+describe("App", () => {
+  beforeAll(() => {
     mockedAxios.get.mockResolvedValue(mockedWeatherResponse);
-    jest.clearAllMocks();
   });
 
-  test('renders titles', async () => {
+  afterEach(() => {
+    vi.clearAllMocks();
+  });
+
+  test("renders titles", async () => {
     await renderApp();
 
-    expect(screen.getByText('Wish you were here')).toBeInTheDocument();
-    expect(screen.getByText('Where would you like to go?')).toBeInTheDocument();
+    expect(screen.getByText(/Wish you were here?/i)).toBeInTheDocument();
+    expect(
+      screen.getByText(/Click a location on the map/i)
+    ).toBeInTheDocument();
   });
 
-  test('calls api with the location of user if navigator is available', async () => {
+  test("calls api with the location of user if navigator is available", async () => {
     const mockGeoLocationResult: GeoLocationResult = {
       latitude: 1,
       longitude: 2,
       isComplete: true,
     };
 
-    jest
-      .spyOn(hooks, 'useGeoLocation')
-      .mockImplementation(() => mockGeoLocationResult);
-
+    mockGeoLocation(mockGeoLocationResult);
     await renderApp();
 
     expect(hooks.useGeoLocation).toHaveBeenCalled();
-    expect(mockedAxios.get).toBeCalledTimes(1);
+    expect(mockedAxios.get).toHaveBeenCalledTimes(1);
     expect(mockedAxios.get).toBeCalledWith(
-      `/.netlify/functions/weather-service?lat=${mockGeoLocationResult.latitude}&lng=${mockGeoLocationResult.longitude}`,
+      `/.netlify/functions/weather-service?lat=${mockGeoLocationResult.latitude}&lng=${mockGeoLocationResult.longitude}`
     );
   });
 
-  test('uses default location if navigator is not available', async () => {
-    const mockGeoLocationResult: GeoLocationResult = {
+  test("uses default location if navigator is not available", async () => {
+    mockGeoLocation({
       isComplete: true,
-    };
-
-    jest
-      .spyOn(hooks, 'useGeoLocation')
-      .mockImplementation(() => mockGeoLocationResult);
+    });
 
     await renderApp();
 
     expect(hooks.useGeoLocation).toHaveBeenCalled();
     expect(mockedAxios.get).toBeCalledWith(
-      `/.netlify/functions/weather-service?lat=${DEFAULT_POSITION.lat}&lng=${DEFAULT_POSITION.lng}`,
+      `/.netlify/functions/weather-service?lat=${DEFAULT_POSITION.lat}&lng=${DEFAULT_POSITION.lng}`
     );
   });
 
-  test('renders weather details', async () => {
-    const mockGeoLocationResult: GeoLocationResult = {
+  test("renders weather details", async () => {
+    mockGeoLocation({
       latitude: 1,
       longitude: 2,
       isComplete: true,
-    };
-
-    jest
-      .spyOn(hooks, 'useGeoLocation')
-      .mockImplementation(() => mockGeoLocationResult);
+    });
 
     await renderApp();
 
-    expect(screen.queryByText(/Weather in London/)).toBeInTheDocument();
+    expect(screen.queryByText(/London/)).toBeInTheDocument();
     expect(screen.queryByText(/14℃/)).toBeInTheDocument();
   });
 
-  test('renders loading message when locating', async () => {
-    const mockGeoLocationResult: GeoLocationResult = {
+  it("renders loading message when locating", async () => {
+    mockGeoLocation({
       isComplete: false,
-    };
-
-    jest
-      .spyOn(hooks, 'useGeoLocation')
-      .mockImplementation(() => mockGeoLocationResult);
+    });
 
     render(<App defaultPosition={DEFAULT_POSITION} />);
 
     expect(screen.queryByText(/Finding your location/)).toBeInTheDocument();
   });
 
-  test('renders message when error occurs on locating', async () => {
-    const mockGeoLocationResult: GeoLocationResult = {
+  test("renders message when error occurs on locating", async () => {
+    mockGeoLocation({
       isComplete: true,
       locatorError: {
         code: 1,
-        message: 'permission denied',
+        message: "permission denied",
         PERMISSION_DENIED: 1,
         POSITION_UNAVAILABLE: 1,
         TIMEOUT: 1,
       },
-    };
+    });
 
-    jest
-      .spyOn(hooks, 'useGeoLocation')
-      .mockImplementation(() => mockGeoLocationResult);
+    await renderApp();
 
-      await renderApp();
-
-    expect(screen.queryByText(/An error occurred whilst finding your location.../)).toBeInTheDocument();
+    expect(
+      screen.queryByText(/An error occurred whilst finding your location.../)
+    ).toBeInTheDocument();
   });
 });
 
@@ -133,7 +128,7 @@ const mockedWeatherResponse: AxiosResponse = {
       lon: DEFAULT_POSITION.lng,
       lat: DEFAULT_POSITION.lat,
     },
-    name: 'London',
+    name: "London",
     main: {
       temp: 14.0,
       feels_like: 12.02,
@@ -145,21 +140,21 @@ const mockedWeatherResponse: AxiosResponse = {
     weather: [
       {
         id: 804,
-        main: 'Clouds',
-        description: 'overcast clouds',
-        icon: '04d',
+        main: "Clouds",
+        description: "overcast clouds",
+        icon: "04d",
       },
     ],
     sys: {
       type: 2,
       id: 268730,
-      country: 'GB',
+      country: "GB",
       sunrise: 1651552130,
       sunset: 1651605947,
     },
   },
   status: 200,
-  statusText: 'OK',
+  statusText: "OK",
   headers: {},
   config: {},
 };

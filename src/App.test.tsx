@@ -122,7 +122,7 @@ describe("App", () => {
   });
 });
 
-const mockedWeatherResponse: AxiosResponse = {
+const mockedWeatherResponse = {
   data: {
     coord: {
       lon: DEFAULT_POSITION.lng,

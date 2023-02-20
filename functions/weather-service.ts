@@ -13,12 +13,10 @@ const weatherHandler: Handler = async (
   event: HandlerEvent,
   context: HandlerContext
 ) => {
-  const latLngPattern = /lat=([\d.-]+)&lng=([\d.-]+)/;
-  const match = event.rawQuery.match(latLngPattern);
-
-  if (match) {
-    const lat = parseFloat(match[1]);
-    const lng = parseFloat(match[2]);
+  const matches = event.path.split("/");
+  if (matches.length > 2) {
+    const lat = parseFloat(matches[matches.length - 2]);
+    const lng = parseFloat(matches[matches.length - 1]);
     try {
       const response = await axios.get(
         `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lng}&units=metric&appid=${process.env.WEATHERAPI}`

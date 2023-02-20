@@ -14,7 +14,7 @@ interface AppProps {
 }
 
 function App({ defaultPosition }: AppProps) {
-  const { isComplete, latitude, longitude, locatorError } = useGeoLocation();
+  const { isComplete, latitude, longitude } = useGeoLocation();
   const [weather, setWeather] = useState<Weather>();
   const [isFetchingWeather, setIsFetchingWeather] = useState<boolean>(false);
 
@@ -74,11 +74,6 @@ function App({ defaultPosition }: AppProps) {
             onClick={memoizedGetWeather}
           />
         )}
-        {locatorError && (
-          <div className="text-lg">
-            An error occurred whilst finding your location...
-          </div>
-        )}
       </div>
       <div className="col-span-1 border-solid border-2 border-grey-500 p-4 flex justify-start">
         {isFetchingWeather && (
@@ -87,7 +82,7 @@ function App({ defaultPosition }: AppProps) {
         {!isFetchingWeather && weather && <WeatherComponent {...weather} />}
       </div>
       <footer className="col-span-1 md:col-span-2 text-xs text-center">
-        Built by Matt Burrell, Solid Code Solutions
+        Built by Matt
       </footer>
     </div>
   );

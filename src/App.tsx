@@ -29,7 +29,7 @@ function App({ defaultPosition }: AppProps) {
     try {
       setIsFetchingWeather(true);
       const response = await axios.get(
-        `/.netlify/functions/weather-service?lat=${lat}&lng=${lng}`
+        `/.netlify/functions/weather-service/${lat}/${lng}`
       );
       const weather = response.data;
 

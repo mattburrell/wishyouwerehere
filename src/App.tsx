@@ -6,6 +6,8 @@ import { Weather } from "./types/Weather";
 import axios from "axios";
 import { useGeoLocation } from "./hooks/useGeoLocation";
 import { GeoCoordinates } from "./types/GeoCoordinates";
+import WeatherLoader from "./components/WeatherLoader";
+import MapLoader from "./components/MapLoader";
 
 const unknownCountry = "Unknown";
 
@@ -62,9 +64,9 @@ function App({ defaultPosition }: AppProps) {
           Click a location on the map
         </h3>
       </div>
-      <div className="col-span-1 border-solid border-2 border-grey-500 flex justify-center align-middle flex-row">
+      <div className="col-span-1 border-solid border-2 border-grey-500 flex justify-center align-middle flex-row bg-slate-100">
         {!isComplete ? (
-          <div className="text-lg p-8">Finding your location...</div>
+          <MapLoader />
         ) : (
           <MapComponent
             location={{
@@ -76,9 +78,7 @@ function App({ defaultPosition }: AppProps) {
         )}
       </div>
       <div className="col-span-1 border-solid border-2 border-grey-500 p-4 flex justify-start">
-        {isFetchingWeather && (
-          <div className="text-lg">Fetching weather...</div>
-        )}
+        {isFetchingWeather && <WeatherLoader />}
         {!isFetchingWeather && weather && <WeatherComponent {...weather} />}
       </div>
       <footer className="col-span-1 md:col-span-2 text-xs text-center">

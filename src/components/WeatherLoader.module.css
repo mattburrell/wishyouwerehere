@@ -3,6 +3,7 @@
   height: 140px;
   display: block;
   margin: 0 auto 20px;
+  background-color: white;
   background-image: radial-gradient(
       circle 25px at 25px 25px,
       #e0e0e0 100%,

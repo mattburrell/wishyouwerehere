@@ -1,5 +1,3 @@
-import { Weather } from "../types/Weather";
-
 function WeatherComponent({
   name,
   icon,

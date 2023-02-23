@@ -1,6 +1,5 @@
 import { memo, useEffect, useState } from "react";
 import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
-import { GeoCoordinates } from "../types/GeoCoordinates";
 
 interface MapComponentProps {
   location: GeoCoordinates;

@@ -1,4 +1,4 @@
-export interface Weather {
+type Weather = {
   name: string;
   temperature: number;
   humidity: number;
@@ -7,4 +7,4 @@ export interface Weather {
   lat: number;
   desc: string;
   country: string;
-}
+};

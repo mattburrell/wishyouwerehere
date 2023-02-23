@@ -1,4 +1,4 @@
-import styles from "./MapLoader.module.css";
+import styles from "./map-loader.module.css";
 
 export default function Loader() {
   return (

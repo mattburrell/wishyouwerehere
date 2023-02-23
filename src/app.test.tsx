@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, test, vi, Mocked } from "vitest";
 import { render, screen, waitFor } from "@testing-library/react";
-import App from "./my-app";
+import App from "./app";
 import axios from "axios";
 import * as hooks from "./hooks/use-geolocation";
 

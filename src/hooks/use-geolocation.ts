@@ -1,12 +1,5 @@
 import { useEffect, useState } from "react";
 
-export interface GeoLocationResult {
-  latitude?: number;
-  longitude?: number;
-  isComplete: boolean;
-  locatorError?: GeolocationPositionError;
-}
-
 export const useGeoLocation = (): GeoLocationResult => {
   const [coordinates, setCoordinates] = useState<GeolocationCoordinates>();
   const [locatorError, setLocatorError] = useState<GeolocationPositionError>();

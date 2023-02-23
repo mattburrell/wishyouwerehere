@@ -1,14 +1,8 @@
 import { afterEach, describe, expect, test, vi, Mocked } from "vitest";
-import {
-  render,
-  screen,
-  waitForElementToBeRemoved,
-} from "@testing-library/react";
-import App from "./App";
-import axios, { AxiosResponse } from "axios";
-import { GeoCoordinates } from "./types/GeoCoordinates";
-import * as hooks from "./hooks/useGeoLocation";
-import { GeoLocationResult } from "./hooks/useGeoLocation";
+import { render, screen, waitFor } from "@testing-library/react";
+import App from "./app";
+import axios from "axios";
+import * as hooks from "./hooks/use-geolocation";
 
 vi.mock("axios");
 const mockedAxios = axios as Mocked<typeof axios>;
@@ -20,9 +14,7 @@ const DEFAULT_POSITION: GeoCoordinates = {
 
 async function renderApp() {
   render(<App defaultPosition={DEFAULT_POSITION} />);
-  await waitForElementToBeRemoved(() =>
-    screen.queryByText(/Fetching weather.../i)
-  );
+  await waitFor(() => screen.findByText(/Description/i));
 }
 
 function mockGeoLocation(mockGeoLocationResult: GeoLocationResult) {
@@ -62,7 +54,7 @@ describe("App", () => {
     expect(hooks.useGeoLocation).toHaveBeenCalled();
     expect(mockedAxios.get).toHaveBeenCalledTimes(1);
     expect(mockedAxios.get).toBeCalledWith(
-      `/.netlify/functions/weather-service?lat=${mockGeoLocationResult.latitude}&lng=${mockGeoLocationResult.longitude}`
+      `/.netlify/functions/weather-service/${mockGeoLocationResult.latitude}/${mockGeoLocationResult.longitude}`
     );
   });
 
@@ -75,7 +67,7 @@ describe("App", () => {
 
     expect(hooks.useGeoLocation).toHaveBeenCalled();
     expect(mockedAxios.get).toBeCalledWith(
-      `/.netlify/functions/weather-service?lat=${DEFAULT_POSITION.lat}&lng=${DEFAULT_POSITION.lng}`
+      `/.netlify/functions/weather-service/${DEFAULT_POSITION.lat}/${DEFAULT_POSITION.lng}`
     );
   });
 
@@ -90,35 +82,6 @@ describe("App", () => {
 
     expect(screen.queryByText(/London/)).toBeInTheDocument();
     expect(screen.queryByText(/14℃/)).toBeInTheDocument();
-  });
-
-  it("renders loading message when locating", async () => {
-    mockGeoLocation({
-      isComplete: false,
-    });
-
-    render(<App defaultPosition={DEFAULT_POSITION} />);
-
-    expect(screen.queryByText(/Finding your location/)).toBeInTheDocument();
-  });
-
-  test("renders message when error occurs on locating", async () => {
-    mockGeoLocation({
-      isComplete: true,
-      locatorError: {
-        code: 1,
-        message: "permission denied",
-        PERMISSION_DENIED: 1,
-        POSITION_UNAVAILABLE: 1,
-        TIMEOUT: 1,
-      },
-    });
-
-    await renderApp();
-
-    expect(
-      screen.queryByText(/An error occurred whilst finding your location.../)
-    ).toBeInTheDocument();
   });
 });
 

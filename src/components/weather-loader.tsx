@@ -1,4 +1,4 @@
-import styles from "./WeatherLoader.module.css";
+import styles from "./weather-loader.module.css";
 
 export default function Loader() {
   return (

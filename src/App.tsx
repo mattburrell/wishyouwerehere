@@ -1,13 +1,11 @@
 import { useCallback, useState } from "react";
-import MapComponent from "./components/MapComponent";
-import WeatherComponent from "./components/WeatherComponent";
+import MapComponent from "./components/map-component";
+import WeatherComponent from "./components/weather-component";
 import { countries } from "./data/countries";
-import { Weather } from "./types/Weather";
 import axios from "axios";
-import { useGeoLocation } from "./hooks/useGeoLocation";
-import { GeoCoordinates } from "./types/GeoCoordinates";
-import WeatherLoader from "./components/WeatherLoader";
-import MapLoader from "./components/MapLoader";
+import { useGeoLocation } from "./hooks/use-geolocation";
+import WeatherLoader from "./components/weather-loader";
+import MapLoader from "./components/map-loader";
 
 const unknownCountry = "Unknown";
 

@@ -7,8 +7,6 @@ import { useGeoLocation } from "./hooks/use-geolocation";
 import WeatherLoader from "./components/weather-loader";
 import MapLoader from "./components/map-loader";
 
-const unknownCountry = "Unknown";
-
 interface AppProps {
   defaultPosition: GeoCoordinates;
 }
@@ -17,6 +15,7 @@ function App({ defaultPosition }: AppProps) {
   const { isComplete, latitude, longitude } = useGeoLocation();
   const [weather, setWeather] = useState<Weather>();
   const [isFetchingWeather, setIsFetchingWeather] = useState<boolean>(false);
+  const unknownCountry = "Unknown";
 
   const lookupCountry = (code: string): string => {
     if (typeof code === "undefined") {
